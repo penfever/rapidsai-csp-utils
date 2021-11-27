@@ -3,15 +3,11 @@ import os, sys, io
 import subprocess
 from pathlib import Path
 
-pkg = "rapids"
-if(sys.argv[1] == "nightly"):
-  release =  ["rapidsai-nightly", "21.12"]
-  print("Installing RAPIDS Nightly "+release[1])
-else:
-  release = ["rapidsai", "21.10"]
-  print("Installing RAPIDS Stable "+release[1])
+release = ["rapidsai", "21.10"]
+print("Installing RAPIDS Stable "+release[1])
 
-pkg = "rapids"
+pkg = "rapids dask-cudf dask-cuda"
+
 print("Starting the RAPIDS install on Colab.  This will take about 15 minutes.")
 
 output = subprocess.Popen(["conda install -y --prefix /usr/local -c "+release[0]+" -c nvidia -c conda-forge python=3.7 cudatoolkit=11.2 "+pkg+"="+release[1]+" llvmlite gcsfs openssl"], shell=True, stderr=subprocess.STDOUT, 
@@ -36,3 +32,5 @@ for so in ['cudf', 'rmm', 'nccl', 'cuml', 'cugraph', 'xgboost', 'cuspatial', 'cu
   if os.path.exists(source_fn):
     print(f'Copying {source_fn} to {dest_fn}')
     shutil.copyfile(source_fn, dest_fn)
+
+print("Script complete.")
